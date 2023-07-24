@@ -46,7 +46,7 @@ Train DDN for real-world image denoising:
 
 ## Test
 Test DDN for AWGN denoising:
-- Copying test color noisy images into DDN/testsets
+- Copy test datasets into DDN/testsets
 - run main_test_compnet.py --t [can be set as 1, 3 or 5] --datasetname
 
 Test DDN for real-world image denoising:
