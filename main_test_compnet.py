@@ -20,7 +20,6 @@ import torch.nn as nn
 from models.loss_ssim import SSIMLoss
 from torch.optim import lr_scheduler
 from torch.autograd import Variable
-# from torchnet.logger import VisdomPlotLogger, VisdomLogger
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '2,3'
 
@@ -85,10 +84,6 @@ def test(model):
     return avg_psnr,avg_ssim,psnrs
 
 if __name__ == '__main__':
-    # total_loss_logger = VisdomPlotLogger('line', opts={'title': 'Loss'})
-    # image_net_logger =  VisdomPlotLogger('line', opts={'title': 'Image net Loss'})
-    # noise_net_logger = VisdomPlotLogger('line', opts={'title': 'Noise net Loss'})
-    # psnr_logger = VisdomPlotLogger('line', opts={'title': 'Train PSNR'})
     for datasetn in datasetname:
         for sigma_ in sigma:
             test_set = DatasetDRNet(in_channels,patch_sizes[0],sigma_,False,'testsets\\'+datasetn)
