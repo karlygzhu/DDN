@@ -41,4 +41,4 @@ Code: jxba
 ### Copying test color noisy images into DDN/testsets
 ### run main_test_compnet.py --t [can be set as 1, 3 or 5] --datasetname
 ## Test DDN for real-world image denoising
-### run main_test_realnoise.py --train_dir [path of training set] --all_noisy_imgs [path of validation set] --all_clean_imgs [path of validation set]
+### run main_test_realnoise_withnG.py  --all_noisy_imgs [path of validation set] --all_clean_imgs [path of validation set]
