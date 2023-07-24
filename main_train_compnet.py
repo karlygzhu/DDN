@@ -23,7 +23,7 @@ from torchnet.logger import VisdomPlotLogger, VisdomLogger
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2,3,4,5,6'
 
-sigma = 25 # 训练时是5-70，测试时是30
+sigma = 30 # 训练时是5-70，测试时是30
 batch_size = 8
 patch_sizes = [128]
 in_channels = 3
@@ -33,7 +33,7 @@ lr = 0.00005
 test_iter = 100
 load_pretrained = False
 logger_name = 'train'
-model_name = 'v4_show'
+model_name = 'v4'
 t = 3
 color_type = 'color'
 save_path =  os.path.join('model_zoo',str(sigma),str(t),color_type,model_name)
@@ -43,8 +43,6 @@ utils_logger.logger_info(logger_name, os.path.join('model_zoo', str(sigma), str(
 logger = logging.getLogger(logger_name)
 
 # viz = Visdom()
-
-
 
 seed = 100
 # logger.info('Random seed: {}'.format(seed))
@@ -79,7 +77,6 @@ if __name__ == '__main__':
     # noise_net_logger = VisdomPlotLogger('line', opts={'title': 'Noise net Loss'})
     # psnr_logger = VisdomPlotLogger('line', opts={'title': 'Train PSNR'})
 
-
     train_set = DatasetDRNet(in_channels,patch_sizes[0],sigma,True,t=t)
     train_loader = DataLoader(train_set,
                               batch_size=batch_size,
@@ -99,26 +96,16 @@ if __name__ == '__main__':
         compnet.load_state_dict(torch.load(os.path.join(save_path,'best.pth')))
 
     # loss function
-    '''
-    if G_lossfn_type == 'l1':
-        G_lossfn = nn.L1Loss().cuda()
-    elif G_lossfn_type == 'l2':
-        G_lossfn = nn.MSELoss().cuda()
-    elif G_lossfn_type == 'l2sum':
-        G_lossfn = nn.MSELoss(reduction='sum').cuda()
-    elif G_lossfn_type == 'ssim':
-        G_lossfn = SSIMLoss().cuda()
-    '''
     total_lossfn = nn.L1Loss().cuda()
     image_net_lossfn = SSIMLoss().cuda()
     # image_net_lossfn = nn.MSELoss().cuda()
-    noise_net_lossfn = nn.KLDivLoss().cuda()  # 不行的话用EM距离 Wasserstein loss
+    noise_net_lossfn = nn.KLDivLoss().cuda() 
     noise_net_lossfn2 = nn.L1Loss().cuda()
     optimizer = torch.optim.Adam(compnet.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 10, eta_min=1e-7)
 
     best = 0
-    count = 78001
+    count = 0
     count_loss = 0
     for epo in range(100000):
         for j, data in enumerate(train_loader):
