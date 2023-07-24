@@ -51,7 +51,7 @@ np.random.seed(seed)
 torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 
-train_dir = r'E:\image_denoising\aaaa\SIDD_patches\train'
+train_dir = r'E:\image_denoising\SIDD_patches\train'
 
 viz = Visdom()
 viz.line([0.0], [0.], win='PSNR', opts=dict(title='Train PSNR'))
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     ######### Scheduler ###########
     total_lossfn = nn.L1Loss().cuda()
     image_net_lossfn = SSIMLoss().cuda()
-    noise_net_lossfn = nn.MSELoss().cuda()  # 不行的话用EM距离 Wasserstein loss
+    noise_net_lossfn = nn.MSELoss().cuda() 
     noise_net_lossfn2 = nn.L1Loss().cuda()
     optimizer = torch.optim.Adam(compnet.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 10, eta_min=1e-7)
@@ -115,9 +115,9 @@ if __name__ == '__main__':
 
     eval_now = 200
     print("Evaluation after every {" + str(eval_now) + "} Iterations !!!\n")
-    all_noisy_imgs = scipy.io.loadmat(r'E:\image_denoising\zzz-finished\DRNet\DRNet\DR_new\testsets\ValidationNoisyBlocksSrgb.mat')[
+    all_noisy_imgs = scipy.io.loadmat(r'E:\image_denoising\testsets\ValidationNoisyBlocksSrgb.mat')[
     'ValidationNoisyBlocksSrgb']
-    all_clean_imgs = scipy.io.loadmat(r'E:\image_denoising\zzz-finished\DRNet\DRNet\DR_new\testsets\ValidationGtBlocksSrgb.mat')['ValidationGtBlocksSrgb']
+    all_clean_imgs = scipy.io.loadmat(r'E:\image_denoising\testsets\ValidationGtBlocksSrgb.mat')['ValidationGtBlocksSrgb']
 
     best = 0
     count = 0
