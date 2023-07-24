@@ -30,8 +30,7 @@ class DatasetDRNet(data.Dataset):
         # return None if input is None
         # ------------------------------------
         if paths_H == None:
-            self.paths_H = util.get_image_paths(r"E:\Video Super-resolution\DataSet\DIV2K\HighResolution\DIV2K_train_HR\DIV2K_train_HR")
-            # self.paths_H = util.get_image_paths(r"E:\image_denoising\datasets\DIV2Kpatch1")
+            self.paths_H = util.get_image_paths(r"E:\image_denoising\datasets\DIV2Kpatch1")
         else:
             self.paths_H = util.get_image_paths(paths_H)
 
@@ -136,7 +135,7 @@ class DatasetDRNet(data.Dataset):
         return len(self.paths_H)
 
 if __name__ == '__main__':
-    train_dir = r'E:\image_denoising\aaaa\SIDD_patches\train'
+    train_dir = r'E:\image_denoising\SIDD_patches\train'
     sigma = 30  # 训练时是5-70，测试时是30
     batch_size = 48
     patch_sizes = [128]
