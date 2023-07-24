@@ -23,7 +23,6 @@ from utils import utils_image as util
 from torchnet.logger import VisdomPlotLogger, VisdomLogger
 from models.loss_ssim import SSIMLoss
 from models.network_compdnet_4_real import Net
-from visdom import Visdom
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2,3,4,5,6'
 sigma = 'realnoise'
@@ -34,7 +33,7 @@ hiddens = 64
 lr = 0.00005
 test_iter = 200
 load_pretrained = True
-logger_name = 'train'
+logger_name = 'test'
 t = 1
 
 ######### Set Seeds ###########
@@ -51,15 +50,8 @@ np.random.seed(seed)
 torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
 
-train_dir = r'E:\image_denoising\aaaa\SIDD_patches\train'
-
-viz = Visdom()
-# viz.line([0.0], [0.], win='PSNR', opts=dict(title='Train PSNR'))
-# viz.line([0.0], [0.], win='Loss', opts=dict(title='Train Loss'))
-
-
 def test(model):
-    model.load_state_dict(torch.load(r'E:\image_denoising\LSTMDiff\model_zoo\realnoise\best.pth'), strict=True)
+    model.load_state_dict(torch.load(r'E:\image_denoising\DDN\model_zoo\realnoise\best.pth'), strict=True)
     model.eval()
     avg_psnr = 0
     avg_ssim = 0
@@ -110,25 +102,21 @@ if __name__ == '__main__':
     ######### Scheduler ###########
     total_lossfn = nn.L1Loss().cuda()
     image_net_lossfn = SSIMLoss().cuda()
-    noise_net_lossfn = nn.MSELoss().cuda()  # 不行的话用EM距离 Wasserstein loss
+    noise_net_lossfn = nn.MSELoss().cuda() 
     noise_net_lossfn2 = nn.L1Loss().cuda()
     optimizer = torch.optim.Adam(compnet.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 10, eta_min=1e-7)
 
     ######### DataLoaders ###########
-    img_options_train = {'patch_size': patch_sizes}
-    train_dataset = get_training_data(train_dir, img_options_train)
-    train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True, num_workers=0,
-                              drop_last=False)
     best_psnr = 0
     best_epoch = 0
     best_iter = 0
 
     eval_now = 200
     print("Evaluation after every {" + str(eval_now) + "} Iterations !!!\n")
-    all_noisy_imgs = scipy.io.loadmat(r'E:\image_denoising\zzz-finished\DRNet\DRNet\DR_new\testsets\ValidationNoisyBlocksSrgb.mat')[
+    all_noisy_imgs = scipy.io.loadmat(r'E:\image_denoising\testsets\ValidationNoisyBlocksSrgb.mat')[
     'ValidationNoisyBlocksSrgb']
-    all_clean_imgs = scipy.io.loadmat(r'E:\image_denoising\zzz-finished\DRNet\DRNet\DR_new\testsets\ValidationGtBlocksSrgb.mat')['ValidationGtBlocksSrgb']
+    all_clean_imgs = scipy.io.loadmat(r'E:\image_denoising\testsets\ValidationGtBlocksSrgb.mat')['ValidationGtBlocksSrgb']
 
     test(compnet)
 
