@@ -38,16 +38,16 @@ Code: jxba
 ----------
 ## Training
 Train DDN for AWGN denoising:
-dataset_compnet.py --self.paths_H [path of training set]
-run main_train_compnet.py --t [can be set as 1, 3 or 5]
+- dataset_compnet.py --self.paths_H [path of training set]
+- run main_train_compnet.py --t [can be set as 1, 3 or 5]
 
 Train DDN for real-world image denoising:
-run main_train_realnoise_withnG.py --train_dir [path of training set] --all_noisy_imgs [path of validation set] --all_clean_imgs [path of validation set]
+- run main_train_realnoise_withnG.py --train_dir [path of training set] --all_noisy_imgs [path of validation set] --all_clean_imgs [path of validation set]
 
 ## Test
 Test DDN for AWGN denoising:
-Copying test color noisy images into DDN/testsets
-run main_test_compnet.py --t [can be set as 1, 3 or 5] --datasetname
+- Copying test color noisy images into DDN/testsets
+- run main_test_compnet.py --t [can be set as 1, 3 or 5] --datasetname
 
 Test DDN for real-world image denoising:
-run main_test_realnoise.py  --all_noisy_imgs [path of test set] --all_clean_imgs [path of test set]
+- run main_test_realnoise.py  --all_noisy_imgs [path of test set] --all_clean_imgs [path of test set]
